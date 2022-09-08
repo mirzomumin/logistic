@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+from captcha.fields import CaptchaField
 
 def year_choices():
 	return tuple([(r,r) for r in range(1984, datetime.date.today().year+1)])
@@ -26,6 +27,17 @@ class MainModel(models.Model):
 	name = models.CharField(max_length=256, null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
+
+	class Meta:
+		abstract = True
+
+
+class BaseMail(models.Model):
+	first_name = models.CharField(max_length=256)
+	last_name = models.CharField(max_length=256)
+	email = models.EmailField()
+	message = models.TextField()
+	captcha = CaptchaField()
 
 	class Meta:
 		abstract = True

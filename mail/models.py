@@ -4,21 +4,88 @@ from django.core.validators import RegexValidator
 from django.utils.text import gettext_lazy as _
 import phonenumbers
 
-from helpers.models import MainModel
+from helpers.models import BaseMail
+from truck.models import Truck
+from trailer.models import Trailer
 # Create your models here.
 
 
-class Mail(MainModel):
-	name = None
-	first_name = models.CharField(max_length=256)
-	last_name = models.CharField(max_length=256)
-	email = models.EmailField()
+class TruckMail(BaseMail):
+	truck = models.ForeignKey(Truck, on_delete=models.CASCADE)
 	phone = PhoneNumberField()
 	postal_code = models.PositiveIntegerField(
-		validators=[RegexValidator('^[0-9]{6}$', _('Invalid postal code'))],)
-	message = models.TextField()
+		validators=[RegexValidator('^[0-9]{4,6}$', _('Invalid postal code'))],)
 
 	def __str__(self):
 		return f'{self.first_name} -\
 		{self.last_name} - {self.email} -\
 		{self.phone} - {self.message}'
+
+
+class TruckFriendMail(BaseMail):
+	truck = models.ForeignKey(Truck, on_delete=models.CASCADE)
+	recipient_email = models.EmailField()
+
+	def __str__(self):
+		return f'{self.first_name} -\
+		{self.last_name} - {self.email} -\
+		{self.recipient_email} - {self.message}'
+
+
+class TruckOffer(BaseMail):
+	truck = models.ForeignKey(Truck, on_delete=models.CASCADE)
+	phone = PhoneNumberField()
+	postal_code = models.PositiveIntegerField(
+		validators=[RegexValidator('^[0-9]{4,6}$', _('Invalid postal code'))],)
+	offer_amount = models.PositiveIntegerField()
+	currency = models.CharField(max_length=64)
+
+	def __str__(self):
+		return f'{self.first_name} -\
+		{self.last_name} - {self.email} -\
+		{self.phone} - {self.message}'
+
+
+class TrailerMail(BaseMail):
+	trailer = models.ForeignKey(Trailer, on_delete=models.CASCADE)
+	phone = PhoneNumberField()
+	postal_code = models.PositiveIntegerField(
+		validators=[RegexValidator('^[0-9]{4,6}$', _('Invalid postal code'))],)
+
+	def __str__(self):
+		return f'{self.first_name} -\
+		{self.last_name} - {self.email} -\
+		{self.phone} - {self.message}'
+
+
+class TrailerOffer(BaseMail):
+	trailer = models.ForeignKey(Trailer, on_delete=models.CASCADE)
+	phone = PhoneNumberField()
+	postal_code = models.PositiveIntegerField(
+		validators=[RegexValidator('^[0-9]{4,6}$', _('Invalid postal code'))],)
+	offer_amount = models.PositiveIntegerField()
+	currency = models.CharField(max_length=64)
+
+	def __str__(self):
+		return f'{self.first_name} -\
+		{self.last_name} - {self.email} -\
+		{self.phone} - {self.message}'
+
+
+class TrailerFriendMail(BaseMail):
+	truck = models.ForeignKey(Trailer, on_delete=models.CASCADE)
+	recipient_email = models.EmailField()
+
+	def __str__(self):
+		return f'{self.first_name} -\
+		{self.last_name} - {self.email} -\
+		{self.recipient_email} - {self.message}'
+
+
+class FriendMail(BaseMail):
+	recipient_email = models.EmailField()
+
+	def __str__(self):
+		return f'{self.first_name} -\
+		{self.last_name} - {self.email} -\
+		{self.recipient_email} - {self.message}'

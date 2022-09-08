@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'phonenumber_field',
+    'captcha',
 
     # My apps
     'truck.apps.TruckConfig',
