@@ -19,7 +19,7 @@ class TruckMail(BaseMail):
 	def __str__(self):
 		return f'{self.first_name} -\
 		{self.last_name} - {self.email} -\
-		{self.phone} - {self.message}'
+		{self.phone} - {self.truck} - {self.message}'
 
 
 class TruckFriendMail(BaseMail):
@@ -29,7 +29,7 @@ class TruckFriendMail(BaseMail):
 	def __str__(self):
 		return f'{self.first_name} -\
 		{self.last_name} - {self.email} -\
-		{self.recipient_email} - {self.message}'
+		{self.recipient_email} - {self.truck} - {self.message}'
 
 
 class TruckOffer(BaseMail):
@@ -43,7 +43,7 @@ class TruckOffer(BaseMail):
 	def __str__(self):
 		return f'{self.first_name} -\
 		{self.last_name} - {self.email} -\
-		{self.phone} - {self.message}'
+		{self.phone} - {self.truck} - {self.message}'
 
 
 class TrailerMail(BaseMail):
@@ -55,7 +55,7 @@ class TrailerMail(BaseMail):
 	def __str__(self):
 		return f'{self.first_name} -\
 		{self.last_name} - {self.email} -\
-		{self.phone} - {self.message}'
+		{self.phone}- {self.trailer} - {self.message}'
 
 
 class TrailerOffer(BaseMail):
@@ -69,17 +69,17 @@ class TrailerOffer(BaseMail):
 	def __str__(self):
 		return f'{self.first_name} -\
 		{self.last_name} - {self.email} -\
-		{self.phone} - {self.message}'
+		{self.phone} - {self.trailer} - {self.message}'
 
 
 class TrailerFriendMail(BaseMail):
-	truck = models.ForeignKey(Trailer, on_delete=models.CASCADE)
+	trailer = models.ForeignKey(Trailer, on_delete=models.CASCADE)
 	recipient_email = models.EmailField()
 
 	def __str__(self):
 		return f'{self.first_name} -\
 		{self.last_name} - {self.email} -\
-		{self.recipient_email} - {self.message}'
+		{self.recipient_email} - {self.trailer} - {self.message}'
 
 
 class FriendMail(BaseMail):
