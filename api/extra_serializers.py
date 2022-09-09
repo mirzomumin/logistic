@@ -7,7 +7,9 @@ from mail.models import (
 	TrailerMail,
 	TrailerOffer,
 	TrailerFriendMail,
-	FriendMail)
+	FriendMail,
+	TruckVideoMail,
+	TrailerVideoMail)
 
 
 class TruckMailSerializer(serializers.ModelSerializer):
@@ -49,4 +51,16 @@ class TrailerFriendMailSerializer(serializers.ModelSerializer):
 class FriendMailSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = FriendMail
+		fields = '__all__'
+
+
+class TruckVideoMailSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = TruckVideoMail
+		fields = '__all__'
+
+
+class TrailerVideoMailSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = TrailerVideoMail
 		fields = '__all__'

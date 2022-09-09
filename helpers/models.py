@@ -37,7 +37,6 @@ class BaseMail(models.Model):
 	last_name = models.CharField(max_length=256)
 	email = models.EmailField()
 	message = models.TextField()
-	captcha = CaptchaField()
 
 	class Meta:
 		abstract = True

@@ -6,7 +6,9 @@ from .models import (TruckMail,
 	TrailerMail,
 	TrailerOffer,
 	TrailerFriendMail,
-	FriendMail)
+	FriendMail,
+	TruckVideoMail,
+	TrailerVideoMail)
 # Register your models here.
 
 admin.site.register(TruckMail)
@@ -16,3 +18,5 @@ admin.site.register(TrailerMail)
 admin.site.register(TrailerOffer)
 admin.site.register(TrailerFriendMail)
 admin.site.register(FriendMail)
+admin.site.register(TruckVideoMail)
+admin.site.register(TrailerVideoMail)

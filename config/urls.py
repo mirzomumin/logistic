@@ -23,7 +23,6 @@ from django.views.static import serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
-    path('captcha/', include('captcha.urls')),
 
 
     # Configurations of the URL for static files and upload files

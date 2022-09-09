@@ -89,3 +89,33 @@ class FriendMail(BaseMail):
 		return f'{self.first_name} -\
 		{self.last_name} - {self.email} -\
 		{self.recipient_email} - {self.message}'
+
+
+class TruckVideoMail(BaseMail):
+	truck = models.ForeignKey(Truck, on_delete=models.CASCADE)
+	phone = PhoneNumberField()
+	postal_code = models.PositiveIntegerField(
+		validators=[RegexValidator('^[0-9]{4,6}$', _('Invalid postal code'))],)
+	video_chat_service = models.CharField(max_length=64)
+	start_date = models.DateTimeField(auto_now_add=True)
+	end_date = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return f'{self.first_name} -\
+		{self.last_name} - {self.email} -\
+		{self.message}'
+
+
+class TrailerVideoMail(BaseMail):
+	trailer = models.ForeignKey(Trailer, on_delete=models.CASCADE)
+	phone = PhoneNumberField()
+	postal_code = models.PositiveIntegerField(
+		validators=[RegexValidator('^[0-9]{4,6}$', _('Invalid postal code'))],)
+	video_chat_service = models.CharField(max_length=64)
+	start_date = models.DateTimeField(auto_now_add=True)
+	end_date = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return f'{self.first_name} -\
+		{self.last_name} - {self.email} -\
+		{self.message}'
