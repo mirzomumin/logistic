@@ -279,12 +279,18 @@ class TruckAttachmentsSerializer(serializers.ModelSerializer):
 
 class TruckImageSerializer(serializers.ModelSerializer):
 	image = serializers.SerializerMethodField()
+	video = serializers.SerializerMethodField()
 	class Meta:
 		model = TruckImage
 		exclude = ('truck', 'id')
 
 	def get_image(self, obj):
-		return obj.image.url
+		if obj.image:
+			return obj.image.url
+
+	def get_video(self, obj):
+		if obj.video:
+			return obj.video.url
 
 	def to_representation(self, instance):
 		result = super(TruckImageSerializer, self).to_representation(instance)

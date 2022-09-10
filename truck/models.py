@@ -214,6 +214,7 @@ class TruckImage(models.Model):
 	truck = models.ForeignKey(Truck, on_delete=models.CASCADE,
 		null=True, blank=True, related_name='truck_images')
 	image = models.ImageField(upload_to='truck-images/', null=True, blank=True)
+	video = models.FileField(upload_to='truck-videos', null=True, blank=True)
 
 	def __str__(self):
 		return f'{self.truck.year} {self.truck.manufacturer}\

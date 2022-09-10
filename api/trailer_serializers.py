@@ -139,6 +139,7 @@ class TrailerInteriorSerializer(serializers.ModelSerializer):
 
 class TrailerImageSerializer(serializers.ModelSerializer):
 	image = serializers.SerializerMethodField()
+	video = serializers.SerializerMethodField()
 	class Meta:
 		model = TrailerImage
 		exclude = ('trailer', 'id',)
@@ -147,6 +148,10 @@ class TrailerImageSerializer(serializers.ModelSerializer):
 		result = super(TrailerImageSerializer, self).to_representation(instance)
 		return OrderedDict([(key, result[key]) for key in result if result[key] not in\
 			[None, 0, '', [], ()]])
+
+	def get_video(self, obj):
+		if obj.video:
+			return obj.video.url
 
 	def get_image(self, obj):
 		if obj.image:

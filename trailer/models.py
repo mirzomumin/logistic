@@ -124,6 +124,7 @@ class TrailerImage(models.Model):
 	trailer = models.ForeignKey(Trailer, on_delete=models.CASCADE,
 		null=True, blank=True, related_name='trailer_images')
 	image = models.ImageField(upload_to='trailer-images/', null=True, blank=True)
+	video = models.FileField(upload_to='truck-videos', null=True, blank=True)
 
 	def __str__(self):
 		return f'{self.trailer.year} {self.trailer.manufacturer}\
