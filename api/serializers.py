@@ -279,23 +279,35 @@ class TruckAttachmentsSerializer(serializers.ModelSerializer):
 
 class TruckImageSerializer(serializers.ModelSerializer):
 	image = serializers.SerializerMethodField()
-	video = serializers.SerializerMethodField()
 	class Meta:
 		model = TruckImage
-		exclude = ('truck', 'id')
+		exclude = ('truck', 'id', 'video',)
 
 	def get_image(self, obj):
 		if obj.image:
 			return obj.image.url
 
-	def get_video(self, obj):
-		if obj.video:
-			return obj.video.url
-
 	def to_representation(self, instance):
 		result = super(TruckImageSerializer, self).to_representation(instance)
 		return OrderedDict([(key, result[key]) for key in result if result[key] not in\
 			[None, '', [], ()]])
+
+
+class TruckVideoSerializer(serializers.ModelSerializer):
+	video = serializers.SerializerMethodField()
+	class Meta:
+		model = TruckImage
+		# fields = '__all__'
+		exclude = ('truck', 'id', 'image',)
+
+	def get_video(self, obj):
+		if obj.video:
+			return obj.video.url
+
+	# def to_representation(self, instance):
+	# 	result = super(TruckImageSerializer, self).to_representation(instance)
+	# 	return OrderedDict([(key, result[key]) for key in result if result[key] not in\
+	# 		[None, '', [], ()]])
 
 
 class TruckSerializer(serializers.ModelSerializer):
@@ -309,6 +321,7 @@ class TruckSerializer(serializers.ModelSerializer):
 	truck_category_specific = TruckCategorySpecificSerializer()
 	truck_attachments = TruckAttachmentsSerializer()
 	truck_images = TruckImageSerializer(many=True)
+	truck_videos = serializers.SerializerMethodField()
 	category = serializers.SerializerMethodField()
 	manufacturer = serializers.SerializerMethodField()
 	condition = serializers.SerializerMethodField()
@@ -319,6 +332,11 @@ class TruckSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Truck
 		fields = '__all__'
+
+	def get_truck_videos(self, obj):
+		videos = TruckImage.objects.filter(truck__id=obj.id)
+		serializer = TruckVideoSerializer(videos, many=True)
+		return serializer.data
 
 	def get_category(self, obj):
 		if obj.category:

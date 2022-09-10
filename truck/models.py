@@ -178,14 +178,16 @@ class TruckCategorySpecific(models.Model):
 	truck = models.OneToOneField(Truck,
 		on_delete=models.CASCADE, null=True, blank=True, related_name='truck_category_specific')
 	lift_and_gate = models.CharField(max_length=256, null=True, blank=True)
+	collision_mitigation_system = models.CharField(max_length=256, null=True, blank=True)
 
 	def __str__(self):
-		if self.lift_and_gate.lower() == 'yes':
-			return f'{self.truck.year} {self.truck.manufacturer}\
-			{self.truck.model} has lift and gate'
-		elif self.lift_and_gate.lower() == 'no':
-			return f'{self.truck.year} {self.truck.manufacturer}\
-				{self.truck.model} has not lift and gate'
+		if self.lift_and_gate:
+			if self.lift_and_gate.lower() == 'yes':
+				return f'{self.truck.year} {self.truck.manufacturer}\
+				{self.truck.model} has lift and gate'
+			elif self.lift_and_gate.lower() == 'no':
+				return f'{self.truck.year} {self.truck.manufacturer}\
+					{self.truck.model} has not lift and gate'
 		return f'{self.truck.year} {self.truck.manufacturer}\
 				{self.truck.model} has {self.lift_and_gate} lift and gate'
 
