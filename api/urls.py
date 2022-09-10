@@ -33,4 +33,7 @@ urlpatterns = [
 	# Video Chat Mail url
 	path('create-truck-video-chat-email/', extra_views.create_truck_video_chat_email, name='create_truck_video_chat_email'),
 	path('create-trailer-video-chat-email/', extra_views.create_trailer_video_chat_email, name='create_trailer_vidoe_chat_email'),
+
+	# Simple Form
+	path('simple-form/', extra_views.create_simple_form, name='simple_form'),
 ]

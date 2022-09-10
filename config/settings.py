@@ -158,6 +158,7 @@ MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
+    "DATETIME_INPUT_FORMATS": ["%H:%M %Y-%m-%d"],
     "DATE_INPUT_FORMATS": ["%Y-%m-%d"],
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -169,8 +170,8 @@ REST_FRAMEWORK = {
 # Email configurations
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'emailwood7@gmail.com'
-EMAIL_HOST_PASSWORD = 'fuefvkggmqrmekol'
+EMAIL_HOST_USER = 'mirzomumin98@gmail.com'
+EMAIL_HOST_PASSWORD = 'fucblsfguhdmfbry'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

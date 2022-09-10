@@ -9,7 +9,8 @@ from .tasks import (
 	send_trailer_email,
 	send_trailer_friend_email,
 	send_trailer_offer_email,
-	send_friend_email
+	send_friend_email,
+	send_simple_form
 )
 from .models import (
 	TruckMail,
@@ -20,14 +21,14 @@ from .models import (
 	TrailerFriendMail,
 	FriendMail,
 	TruckVideoMail,
-	TrailerVideoMail
+	TrailerVideoMail,
+	SimpleForm
 )
 
 
 @receiver(post_save, sender=TruckMail)
-async def create_user_profile(sender, instance, created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):
 	if created:
-		await asyncio.sleep(0.5)
 		send_truck_email(instance)
 
 
@@ -74,7 +75,12 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=FriendMail)
-async def create_user_profile(sender, instance, created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):
 	if created:
-		await asyncio.sleep(0.5)
 		send_friend_email(instance)
+
+
+@receiver(post_save, sender=SimpleForm)
+def create_user_profile(sender, instance, created, **kwargs):
+	if created:
+		send_simple_form(instance)

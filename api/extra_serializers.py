@@ -9,7 +9,8 @@ from mail.models import (
 	TrailerFriendMail,
 	FriendMail,
 	TruckVideoMail,
-	TrailerVideoMail)
+	TrailerVideoMail,
+	SimpleForm)
 
 
 class TruckMailSerializer(serializers.ModelSerializer):
@@ -55,12 +56,22 @@ class FriendMailSerializer(serializers.ModelSerializer):
 
 
 class TruckVideoMailSerializer(serializers.ModelSerializer):
+	start_date = serializers.DateTimeField(input_formats=["%H:%M %Y-%m-%d"])
+	end_date = serializers.DateTimeField(input_formats=["%H:%M %Y-%m-%d"])
 	class Meta:
 		model = TruckVideoMail
 		fields = '__all__'
 
 
 class TrailerVideoMailSerializer(serializers.ModelSerializer):
+	start_date = serializers.DateTimeField(input_formats=["%H:%M %Y-%m-%d"])
+	end_date = serializers.DateTimeField(input_formats=["%H:%M %Y-%m-%d"])
 	class Meta:
 		model = TrailerVideoMail
+		fields = '__all__'
+
+
+class SimpleFormSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = SimpleForm
 		fields = '__all__'

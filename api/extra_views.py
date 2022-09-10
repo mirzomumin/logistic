@@ -10,7 +10,8 @@ from .extra_serializers import (
 	TrailerFriendMailSerializer,
 	FriendMailSerializer,
 	TruckVideoMailSerializer,
-	TrailerVideoMailSerializer
+	TrailerVideoMailSerializer,
+	SimpleFormSerializer
 )
 
 
@@ -106,6 +107,17 @@ def create_truck_video_chat_email(request):
 @api_view(['POST'])
 def create_trailer_video_chat_email(request):
 	serializer = TrailerVideoMailSerializer(data=request.data)
+
+	if serializer.is_valid():
+		serializer.save()
+
+		return Response(serializer.data, status=201)
+	return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def create_simple_form(request):
+	serializer = SimpleFormSerializer(data=request.data)
 
 	if serializer.is_valid():
 		serializer.save()

@@ -112,10 +112,21 @@ class TrailerVideoMail(BaseMail):
 	postal_code = models.PositiveIntegerField(
 		validators=[RegexValidator('^[0-9]{4,6}$', _('Invalid postal code'))],)
 	video_chat_service = models.CharField(max_length=64)
-	start_date = models.DateTimeField(auto_now_add=True)
-	end_date = models.DateTimeField(auto_now=True)
+	start_date = models.DateTimeField()
+	end_date = models.DateTimeField()
 
 	def __str__(self):
 		return f'{self.first_name} -\
 		{self.last_name} - {self.email} -\
 		{self.message}'
+
+
+class SimpleForm(BaseMail):
+	country = models.CharField(max_length=256)
+	state = models.CharField(max_length=256)
+	city = models.CharField(max_length=256)
+
+	def __str__(self):
+		return f'{self.first_name} -\
+		{self.last_name} - {self.email} -\
+		{self.message} from {self.city}'

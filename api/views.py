@@ -4,7 +4,7 @@ from django.utils import timezone
 from datetime import timedelta, datetime
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+categories_list = []
 from truck.models import (
 	Truck,
 	TruckEngine,
@@ -56,6 +56,21 @@ from trailer_utils.models import (
 from .filters import TruckFilter, TrailerFilter
 # Create your views here.
 
+def get_category_trucks(categories, queryset):
+	global categories_list
+	for category in categories:
+		if category.subcategories.all():
+			categories = category.subcategories.all()
+			get_category_trucks(categories, queryset)
+		else:
+			categories_list.append(category)
+	result = queryset.filter(category__in=categories_list)
+	return result
+
+
+def get_category(category_name):
+	return TruckCategory.objects.get(name=category_name)
+
 
 class TruckListView(generics.ListAPIView):
 	serializer_class = TruckSerializer
@@ -100,8 +115,13 @@ class TruckListView(generics.ListAPIView):
 			listing_types = listing_type.split('^^')
 			queryset = queryset.filter(listing_type__name__in=listing_types)
 		if category:
-			categories = category.split('^^')
-			queryset = queryset.filter(category__name__in=categories)
+			category_names = category.split('^^')
+			categories = list(map(get_category, category_names))
+			# queryset = queryset.filter(category__in=categories)
+			queryset = get_category_trucks(categories, queryset)
+			categories_list.clear()
+
+			# print(queryset)
 		if manufacturer:
 			manufacturers = manufacturer.split('^^')
 			queryset = queryset.filter(manufacturer__name__in=manufacturers)
@@ -173,6 +193,23 @@ class TruckDetailView(generics.RetrieveAPIView):
 	queryset = Truck.objects.all()
 
 
+trailer_categories_list = []
+def get_trailer_category_trucks(categories, queryset):
+	global trailer_categories_list
+	for category in categories:
+		if category.subcategories.all():
+			categories = category.subcategories.all()
+			get_trailer_category_trucks(categories, queryset)
+		else:
+			trailer_categories_list.append(category)
+	result = queryset.filter(category__in=trailer_categories_list)
+	return result
+
+
+def get_trailer_category(category_name):
+	return TrailerCategory.objects.get(name=category_name)
+
+
 class TrailerListView(generics.ListAPIView):
 	serializer_class = TrailerSerializer
 	filterset_class = TrailerFilter
@@ -202,8 +239,10 @@ class TrailerListView(generics.ListAPIView):
 			listing_types = listing_type.split('^^')
 			queryset = queryset.filter(listing_type__name__in=listing_types)
 		if category:
-			categories = category.split('^^')
-			queryset = queryset.filter(category__name__in=categories)
+			category_names = category.split('^^')
+			categories = list(map(get_trailer_category, category_names))
+			queryset = get_trailer_category_trucks(categories, queryset)
+			trailer_categories_list.clear()
 		if manufacturer:
 			manufacturers = manufacturer.split('^^')
 			queryset = queryset.filter(manufacturer__name__in=manufacturers)
