@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from collections import OrderedDict
+from django.db.models import Q
 
 
 # Import models
@@ -42,9 +43,9 @@ class TruckCategorySerializer(serializers.ModelSerializer):
 		result = super(TruckCategorySerializer, self).to_representation(instance)
 		result['count'] = instance.category_trucks.all().count()
 		if result['subcategories']:
-			result['count'] = sum([subcategory['count'] for subcategory in result['subcategories']]) + instance.category_trucks.all().count()
+			result['count'] = sum([subcategory['count'] for subcategory in result['subcategories'] if subcategory['count'] > 0]) + instance.category_trucks.all().count()
 		return OrderedDict([(key, result[key]) for key in result if result[key] not in\
-			[None, 0, '', [], ()] and result['count'] > 0])
+			[None, '', [], ()]])
 
 
 class ListingTypeSerializer(serializers.ModelSerializer):
@@ -277,39 +278,6 @@ class TruckAttachmentsSerializer(serializers.ModelSerializer):
 			[None, '', [], ()]])
 
 
-class TruckImageSerializer(serializers.ModelSerializer):
-	image = serializers.SerializerMethodField()
-	class Meta:
-		model = TruckImage
-		exclude = ('truck', 'id', 'video',)
-
-	def get_image(self, obj):
-		if obj.image:
-			return obj.image.url
-
-	def to_representation(self, instance):
-		result = super(TruckImageSerializer, self).to_representation(instance)
-		return OrderedDict([(key, result[key]) for key in result if result[key] not in\
-			[None, '', [], ()]])
-
-
-class TruckVideoSerializer(serializers.ModelSerializer):
-	video = serializers.SerializerMethodField()
-	class Meta:
-		model = TruckImage
-		# fields = '__all__'
-		exclude = ('truck', 'id', 'image',)
-
-	def get_video(self, obj):
-		if obj.video:
-			return obj.video.url
-
-	# def to_representation(self, instance):
-	# 	result = super(TruckImageSerializer, self).to_representation(instance)
-	# 	return OrderedDict([(key, result[key]) for key in result if result[key] not in\
-	# 		[None, '', [], ()]])
-
-
 class TruckSerializer(serializers.ModelSerializer):
 	truck_engine = TruckEngineSerializer()
 	truck_powertrain = TruckPowertrainSerializer()
@@ -320,8 +288,6 @@ class TruckSerializer(serializers.ModelSerializer):
 	truck_dimensions = TruckDimensionsSerializer()
 	truck_category_specific = TruckCategorySpecificSerializer()
 	truck_attachments = TruckAttachmentsSerializer()
-	truck_images = TruckImageSerializer(many=True)
-	truck_videos = serializers.SerializerMethodField()
 	category = serializers.SerializerMethodField()
 	manufacturer = serializers.SerializerMethodField()
 	condition = serializers.SerializerMethodField()
@@ -329,18 +295,30 @@ class TruckSerializer(serializers.ModelSerializer):
 	country = serializers.SerializerMethodField()
 	state = serializers.SerializerMethodField()
 	city = serializers.SerializerMethodField()
+	media = serializers.SerializerMethodField()
+
 	class Meta:
 		model = Truck
 		fields = '__all__'
 
-	def get_truck_videos(self, obj):
-		videos = TruckImage.objects.filter(truck__id=obj.id)
-		serializer = TruckVideoSerializer(videos, many=True)
-		return serializer.data
-
 	def get_category(self, obj):
 		if obj.category:
 			return obj.category.name
+
+	def get_media(self, obj):
+		objects = TruckImage.objects.filter(truck__id=obj.id)
+		data = []
+		for o in objects:
+			if o.image:
+				data.append({
+					"image":o.image.url
+					})
+			if o.video:
+				data.append({
+					"video":o.video.url
+					})
+		return data
+
 
 	def get_manufacturer(self, obj):
 		if obj.manufacturer:
@@ -370,3 +348,7 @@ class TruckSerializer(serializers.ModelSerializer):
 		result = super(TruckSerializer, self).to_representation(instance)
 		return OrderedDict([(key, result[key]) for key in result if result[key] not in\
 			[None, '', [], ()]])
+
+	def to_representation(self, instance):
+		data = super().to_representation(instance)
+		return {k: v for k, v in data.items() if v is not None}

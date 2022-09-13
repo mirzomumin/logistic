@@ -36,4 +36,9 @@ urlpatterns = [
 
 	# Simple Form
 	path('simple-form/', extra_views.create_simple_form, name='simple_form'),
+
+	# PDF downloading
+	path('pdf/Pagesfromsandhillsmag.pdf', extra_views.fetch_report_about_company, name='pdf_about'),
+	path('pdf/Company_Credit_Application.pdf', extra_views.fetch_report_company_creadit_app, name='pdf_company'),
+	path('pdf/Personal_Credit_Application.pdf', extra_views.fetch_report_personal_credit_app, name='pdf_personal'),
 ]

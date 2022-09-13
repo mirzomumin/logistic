@@ -59,6 +59,7 @@ from .filters import TruckFilter, TrailerFilter
 def get_category_trucks(categories, queryset):
 	global categories_list
 	for category in categories:
+		categories_list.append(category)
 		if category.subcategories.all():
 			categories = category.subcategories.all()
 			get_category_trucks(categories, queryset)
@@ -116,6 +117,8 @@ class TruckListView(generics.ListAPIView):
 			queryset = queryset.filter(listing_type__name__in=listing_types)
 		if category:
 			category_names = category.split('^^')
+			while '' in category_names:
+				category_names.remove('')
 			categories = list(map(get_category, category_names))
 			# queryset = queryset.filter(category__in=categories)
 			queryset = get_category_trucks(categories, queryset)
@@ -197,6 +200,7 @@ trailer_categories_list = []
 def get_trailer_category_trucks(categories, queryset):
 	global trailer_categories_list
 	for category in categories:
+		trailer_categories_list.append(category)
 		if category.subcategories.all():
 			categories = category.subcategories.all()
 			get_trailer_category_trucks(categories, queryset)
@@ -240,6 +244,8 @@ class TrailerListView(generics.ListAPIView):
 			queryset = queryset.filter(listing_type__name__in=listing_types)
 		if category:
 			category_names = category.split('^^')
+			while '' in category_names:
+				category_names.remove('')
 			categories = list(map(get_trailer_category, category_names))
 			queryset = get_trailer_category_trucks(categories, queryset)
 			trailer_categories_list.clear()

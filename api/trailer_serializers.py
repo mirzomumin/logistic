@@ -66,7 +66,7 @@ class TrailerCategorySerializer(serializers.ModelSerializer):
 		result = super(TrailerCategorySerializer, self).to_representation(instance)
 		result['count'] = instance.category_trailers.all().count()
 		if result['subcategories']:
-			result['count'] = sum([subcategory['count'] for subcategory in result['subcategories']]) + instance.category_trailers.all().count()
+			result['count'] = sum([subcategory['count'] for subcategory in result['subcategories'] if subcategory['count']]) + instance.category_trailers.all().count()
 		return OrderedDict([(key, result[key]) for key in result if result[key] not in (None, 0, '', [], ()) and result['count'] > 0])
 
 
@@ -137,28 +137,9 @@ class TrailerInteriorSerializer(serializers.ModelSerializer):
 			[None, 0, '', [], ()]])
 
 
-class TrailerImageSerializer(serializers.ModelSerializer):
-	image = serializers.SerializerMethodField()
-	video = serializers.SerializerMethodField()
-	class Meta:
-		model = TrailerImage
-		exclude = ('trailer', 'id',)
-
-	def to_representation(self, instance):
-		result = super(TrailerImageSerializer, self).to_representation(instance)
-		return OrderedDict([(key, result[key]) for key in result if result[key] not in\
-			[None, 0, '', [], ()]])
-
-	def get_video(self, obj):
-		if obj.video:
-			return obj.video.url
-
-	def get_image(self, obj):
-		if obj.image:
-			return obj.image.url
 
 class TrailerSerializer(serializers.ModelSerializer):
-	trailer_images = TrailerImageSerializer(many=True)
+	# trailer_images = TrailerImageSerializer(many=True)
 	trailer_dimensions = TrailerDimensionsSerializer()
 	trailer_category_specific = TrailerCategorySpecificSerializer()
 	trailer_chassis = TrailerChassisSerializer()
@@ -171,10 +152,25 @@ class TrailerSerializer(serializers.ModelSerializer):
 	state = serializers.SerializerMethodField()
 	city = serializers.SerializerMethodField()
 	listing_type = serializers.SerializerMethodField()
+	media = serializers.SerializerMethodField()
 
 	class Meta:
 		model = Trailer
 		fields = '__all__'
+
+	def get_media(self, obj):
+		objects = TrailerImage.objects.filter(trailer__id=obj.id)
+		data = []
+		for o in objects:
+			if o.image:
+				data.append({
+					'image': o.image.url
+				})
+			if o.video:
+				data.append({
+					'video': o.video.url
+				})
+		return data
 
 	def get_condition(self, obj):
 		if obj.condition:

@@ -1,5 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.decorators import action
+from django.http import HttpResponse
+from wsgiref.util import FileWrapper
 
 from .extra_serializers import (
 	TruckMailSerializer,
@@ -124,3 +127,27 @@ def create_simple_form(request):
 
 		return Response(serializer.data, status=201)
 	return Response(serializer.errors, status=400)
+
+
+
+# PDF functions
+@action(detail=True, methods=['get'])
+def fetch_report_about_company(request, *args, **kwargs):
+	short_report = open("static/pdf/Pagesfromsandhillsmag.pdf", 'rb')
+	response = HttpResponse(FileWrapper(short_report), content_type='application/pdf')
+	return response
+
+
+
+@action(detail=True, methods=['get'])
+def fetch_report_company_creadit_app(request, *args, **kwargs):
+	short_report = open("static/pdf/Company_Credit_Application.pdf", 'rb')
+	response = HttpResponse(FileWrapper(short_report), content_type='application/pdf')
+	return response
+
+
+@action(detail=True, methods=['get'])
+def fetch_report_personal_credit_app(request, *args, **kwargs):
+	short_report = open("static/pdf/Personal_Credit_Application.pdf", 'rb')
+	response = HttpResponse(FileWrapper(short_report), content_type='application/pdf')
+	return response

@@ -126,6 +126,9 @@ class TrailerImage(models.Model):
 	image = models.ImageField(upload_to='trailer-images/', null=True, blank=True)
 	video = models.FileField(upload_to='truck-videos', null=True, blank=True)
 
+	class Meta:
+		ordering = ('-image',)
+
 	def __str__(self):
 		return f'{self.trailer.year} {self.trailer.manufacturer}\
 		{self.trailer.model} has {self.image} image'

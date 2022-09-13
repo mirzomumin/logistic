@@ -57,6 +57,21 @@ class Truck(BaseModel):
 		{self.manufacturer}\
 		{self.model}'
 
+	# @property
+	# def media(self):
+	# 	images = TruckImage.objects.filter(truck=self.id)
+	# 	data = []
+	# 	for i in images:
+	# 		if i.image:
+	# 			data.append({
+	# 				"image":i.image.url
+	# 				})
+	# 		if i.video:
+	# 			data.append({
+	# 				"video":i.video.url
+	# 				})
+	# 	return data
+
 
 class TruckEngine(models.Model):
 	truck = models.OneToOneField(Truck, on_delete=models.CASCADE,
@@ -217,6 +232,9 @@ class TruckImage(models.Model):
 		null=True, blank=True, related_name='truck_images')
 	image = models.ImageField(upload_to='truck-images/', null=True, blank=True)
 	video = models.FileField(upload_to='truck-videos', null=True, blank=True)
+
+	class Meta:
+		ordering = ('-image',)
 
 	def __str__(self):
 		return f'{self.truck.year} {self.truck.manufacturer}\
