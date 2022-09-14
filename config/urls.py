@@ -20,9 +20,12 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.static import serve
 
+from truck import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
+    path('ajax/load-cities/', views.load_cities, name='ajax_load_cities'),
 
 
     # Configurations of the URL for static files and upload files

@@ -123,7 +123,7 @@ class TrailerExterior(models.Model):
 class TrailerImage(models.Model):
 	trailer = models.ForeignKey(Trailer, on_delete=models.CASCADE,
 		null=True, blank=True, related_name='trailer_images')
-	image = models.ImageField(upload_to='trailer-images/', null=True, blank=True)
+	image = models.ImageField(upload_to='trailer-images/', null=True)
 	video = models.FileField(upload_to='truck-videos', null=True, blank=True)
 
 	class Meta:

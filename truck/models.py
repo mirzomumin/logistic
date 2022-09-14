@@ -230,7 +230,7 @@ class TruckAttachments(models.Model):
 class TruckImage(models.Model):
 	truck = models.ForeignKey(Truck, on_delete=models.CASCADE,
 		null=True, blank=True, related_name='truck_images')
-	image = models.ImageField(upload_to='truck-images/', null=True, blank=True)
+	image = models.ImageField(upload_to='truck-images/', null=True)
 	video = models.FileField(upload_to='truck-videos', null=True, blank=True)
 
 	class Meta:
