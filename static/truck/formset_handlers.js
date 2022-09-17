@@ -3,6 +3,7 @@ $("#id_state").change(function () {
   var protocol = window.location.protocol
   var host = window.location.host
   var url = protocol + '//' + host + '/ajax/load-cities/'
+  console.log(url)
   var stateId = $(this).val();  // get the selected country ID from the HTML input
 
   $.ajax({                       // initialize an AJAX request
