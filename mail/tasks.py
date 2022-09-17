@@ -22,7 +22,7 @@ def send_truck_email(instance):
 	from_email = settings.EMAIL_HOST_USER
 	if 'recipient_email' in [f.name for f in instance._meta.get_fields()]:
 		recipient = instance.recipient_email
-	recipient = 'mirzomumin@list.ru'
+	recipient = 'eandatrucksales@gmail.com'
 	body = f'Subject: {subject}\n \nFrom user: {from_user}\n \nFirst Name: {first_name}\n \nLast Name: {last_name}\n \nMessage: {message}'
 	try:
 		send_mail(
@@ -45,7 +45,7 @@ def send_truck_friend_email(instance):
 	from_email = settings.EMAIL_HOST_USER
 	if 'recipient_email' in [f.name for f in instance._meta.get_fields()]:
 		recipient = instance.recipient_email
-	recipient = 'mirzomumin@list.ru'
+	recipient = 'eandatrucksales@gmail.com'
 	body = f'Subject: {subject}\n \nFrom user: {from_user}\n \nFirst Name: {first_name}\n \nLast Name: {last_name}\n \nMessage: {message}'
 	try:
 		send_mail(
@@ -68,7 +68,7 @@ def send_truck_offer_email(instance):
 	from_email = settings.EMAIL_HOST_USER
 	if 'recipient_email' in [f.name for f in instance._meta.get_fields()]:
 		recipient = instance.recipient_email
-	recipient = 'mirzomumin@list.ru'
+	recipient = 'eandatrucksales@gmail.com'
 	body = f'Subject: {subject}\n \nFrom user: {from_user}\n \nFirst Name: {first_name}\n \nLast Name: {last_name}\n \nMessage: {message}'
 	try:
 		send_mail(
@@ -91,7 +91,7 @@ def send_trailer_email(instance):
 	from_email = settings.EMAIL_HOST_USER
 	if 'recipient_email' in [f.name for f in instance._meta.get_fields()]:
 		recipient = instance.recipient_email
-	recipient = 'mirzomumin@list.ru'
+	recipient = 'eandatrucksales@gmail.com'
 	body = f'Subject: {subject}\n \nFrom user: {from_user}\n \nFirst Name: {first_name}\n \nLast Name: {last_name}\n \nMessage: {message}'
 	try:
 		send_mail(
@@ -114,7 +114,7 @@ def send_trailer_friend_email(instance):
 	from_email = settings.EMAIL_HOST_USER
 	if 'recipient_email' in [f.name for f in instance._meta.get_fields()]:
 		recipient = instance.recipient_email
-	recipient = 'mirzomumin@list.ru'
+	recipient = 'eandatrucksales@gmail.com'
 	body = f'Subject: {subject}\n \nFrom user: {from_user}\n \nFirst Name: {first_name}\n \nLast Name: {last_name}\n \nMessage: {message}'
 	try:
 		send_mail(
@@ -137,7 +137,7 @@ def send_trailer_offer_email(instance):
 	from_email = settings.EMAIL_HOST_USER
 	if 'recipient_email' in [f.name for f in instance._meta.get_fields()]:
 		recipient = instance.recipient_email
-	recipient = 'mirzomumin@list.ru'
+	recipient = 'eandatrucksales@gmail.com'
 	body = f'Subject: {subject}\n \nFrom user: {from_user}\n \nFirst Name: {first_name}\n \nLast Name: {last_name}\n \nMessage: {message}'
 	try:
 		send_mail(
@@ -179,7 +179,7 @@ def send_simple_form(instance):
 	message = instance.message
 	from_user = instance.email
 	from_email = settings.EMAIL_HOST_USER
-	recipient = "mirzomumin@list.ru"
+	recipient = "eandatrucksales@gmail.com"
 	body = f'Subject: {subject}\n \nFrom user: {from_user}\n \nFirst Name: {first_name}\n \nLast Name: {last_name}\n \nMessage: {message}'
 	try:
 		send_mail(
