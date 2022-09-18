@@ -1,3 +1,27 @@
+$.ajaxSetup({ 
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     } 
+});
+
 $("#id_state").change(function () {
   // var url = $("#ajax_load_cities").attr("href");  // get the url of the `load_cities` view
   var protocol = window.location.protocol
@@ -14,7 +38,7 @@ $("#id_state").change(function () {
     success: function (data) {   // `data` is the return of the `load_cities` view function
       $("#id_city").html(data);  // replace the contents of the city input with the data that came from the server
     },
-    csrfmiddlewaretoken: '{{ csrf_token }}'
+    // csrfmiddlewaretoken: '{{ csrf_token }}'
   });
 
 });
