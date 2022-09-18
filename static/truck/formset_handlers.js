@@ -13,7 +13,8 @@ $("#id_state").change(function () {
     },
     success: function (data) {   // `data` is the return of the `load_cities` view function
       $("#id_city").html(data);  // replace the contents of the city input with the data that came from the server
-    }
+    },
+    csrfmiddlewaretoken: '{{ csrf_token }}'
   });
 
 });
