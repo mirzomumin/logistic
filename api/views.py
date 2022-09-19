@@ -111,7 +111,11 @@ class TruckListView(generics.ListAPIView):
 		max_sleeper_size = self.request.query_params.get('max-sleeper-size')
 		transmission_type = self.request.query_params.get('transmission-type')
 		stock_number = self.request.query_params.get('stock')
+		suspension = self.request.query_params.get('suspension')
 
+		if suspension:
+			suspensions = suspension.split('^^')
+			queryset = queryset.filter(truck_chassis__suspension__in=suspensions)
 		if listing_type:
 			listing_types = listing_type.split('^^')
 			queryset = queryset.filter(listing_type__name__in=listing_types)
@@ -178,6 +182,8 @@ class TruckListView(generics.ListAPIView):
 			queryset = queryset.filter(truck_engine__engine_manufacturer__name__in=engine_manufacturers)
 		if number_of_speed:
 			number_of_speeds = number_of_speed.split('^^')
+			while '' in number_of_speeds:
+				number_of_speeds.remove('')
 			queryset = queryset.filter(truck_powertrain__number_of_speeds__in=number_of_speeds)
 		if min_sleeper_size and max_sleeper_size:
 			queryset = queryset.filter(truck_interior__sleeper_size__gte=min_sleeper_size, truck_interior__sleeper_size__lte=max_sleeper_size)
@@ -387,7 +393,7 @@ def get_trailer_filter_options(request):
 	data['category_options'] = trailer_category_serializer.data
 
 	# Trailer Manufacturer
-	trailer_manufacturer_values = TrailerManufacturer.objects.all()
+	trailer_manufacturer_values = TrailerManufacturer.objects.filter(~Q(manufacturer_trailers=None))
 	trailer_manufacturer_serializer = TrailerManufacturerSerializer(trailer_manufacturer_values, many=True)
 	data['manufacturer_options'] = trailer_manufacturer_serializer.data
 
