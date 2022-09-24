@@ -169,11 +169,11 @@ REST_FRAMEWORK = {
 
 # Email configurations
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'emailwood7@gmail.com'
-EMAIL_HOST_PASSWORD = 'eygcrwqfbbrsyeti'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtpout.secureserver.net'
+EMAIL_HOST_USER = 'info@ea-trucksales.com'
+EMAIL_HOST_PASSWORD = 'Erkinton2022'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
 
 
 # Celery configurations
