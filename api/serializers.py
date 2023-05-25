@@ -43,7 +43,7 @@ class TruckCategorySerializer(serializers.ModelSerializer):
 		result = super(TruckCategorySerializer, self).to_representation(instance)
 		result['count'] = instance.category_trucks.all().count()
 		if result['subcategories']:
-			result['count'] = sum([subcategory['count'] for subcategory in result['subcategories'] if subcategory['count'] > 0]) + instance.category_trucks.all().count()
+			result['count'] = sum([subcategory.get('count') for subcategory in result['subcategories'] if subcategory.get('count', 0) > 0]) + instance.category_trucks.all().count()
 		return OrderedDict([(key, result[key]) for key in result if result[key] not in\
 			[None, '', [], ()]])
 

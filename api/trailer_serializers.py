@@ -66,7 +66,7 @@ class TrailerCategorySerializer(serializers.ModelSerializer):
 		result = super(TrailerCategorySerializer, self).to_representation(instance)
 		result['count'] = instance.category_trailers.all().count()
 		if result['subcategories']:
-			result['count'] = sum([subcategory['count'] for subcategory in result['subcategories'] if subcategory['count']]) + instance.category_trailers.all().count()
+			result['count'] = sum([subcategory.get('count') for subcategory in result['subcategories'] if subcategory.get('count', 0) > 0]) + instance.category_trailers.all().count()
 		return OrderedDict([(key, result[key]) for key in result if result[key] not in (None, 0, '', [], ()) and result['count'] > 0])
 
 
